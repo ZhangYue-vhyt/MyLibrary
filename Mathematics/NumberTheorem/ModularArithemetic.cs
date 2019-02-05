@@ -1,4 +1,5 @@
 using System;
+
 namespace MyLibrary.Mathematics.NumberTheorem
 {
     public class ModularArithmetic
