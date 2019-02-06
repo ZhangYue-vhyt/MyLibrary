@@ -26,7 +26,9 @@ namespace MyLibrary.Mathematics.Cryptography
         /// </summary>
         /// <param name="plaintext"></param>
         /// <returns>Ciphertext</returns>
-        public string Encryption(string plaintext) => new String(plaintext.ToCharArray().Select(c => Convert.ToChar(('A' + ((Key.Item1 * c + Key.Item2)) % Modulo))).ToArray());
+        public string Encryption(string plaintext) =>
+            new String(plaintext.ToCharArray().Select(c =>
+                Convert.ToChar(('A' + ((Key.Item1 * c + Key.Item2)) % Modulo))).ToArray());
 
         /// <summary>
         /// Key = (a,b)
@@ -51,13 +53,15 @@ namespace MyLibrary.Mathematics.Cryptography
         /// <param name="pair1">(x1,y1)</param>
         /// <param name="pair2">(x2,y2)</param>
         /// <returns>A list of possible Keys (a,b,isValid)</returns>
-        public(int, int, bool) GuessKey((int, int) pair1, (int, int) pair2) =>
-            ModularArithmetic.HasInverse(PositiveMod(pair2.Item1 - pair1.Item1), Modulo) ?
-            (ModularArithmetic.Inverse(PositiveMod(pair2.Item1 - pair1.Item1), Modulo) * (PositiveMod(pair2.Item2 - pair1.Item2)) % Modulo,
-                PositiveMod((pair1.Item2 -
-                    ModularArithmetic.Inverse(PositiveMod(pair2.Item1 - pair1.Item1), Modulo) * (PositiveMod(pair2.Item2 - pair1.Item2)) % Modulo *
-                    pair1.Item1) % Modulo),
-                true) :
-            (0, 0, false);
+        public(int, int, bool) GuessKey((int, int) pair1, (int, int) pair2)
+        {
+            if (ModularArithmetic.HasInverse(PositiveMod(pair2.Item1 - pair1.Item1), Modulo))
+            {
+                var a = ModularArithmetic.Inverse(PositiveMod(pair2.Item1 - pair1.Item1), Modulo) * (PositiveMod(pair2.Item2 - pair1.Item2)) % Modulo;
+                var b = PositiveMod((pair1.Item2 - a * pair1.Item1) % Modulo);
+                return (a, b, true);
+            }
+            return (0, 0, false);
+        }
     }
 }

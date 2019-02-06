@@ -9,6 +9,7 @@ namespace MyLibrary.Extensions
         public static void PrintEnumerable<T>(this IEnumerable<T> ary) =>
             System.Console.WriteLine("[{0}]", String.Join(", ", ary));
         public static void PrintDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dict) =>
-            PrintEnumerable(dict.Select(element => "{" + element.Key + ": " + element.Value + "}"));
+            PrintEnumerable(dict.Select(element =>
+                "{" + element.Key + ": " + element.Value + "}"));
     }
 }
