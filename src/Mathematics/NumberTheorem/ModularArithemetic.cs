@@ -5,8 +5,8 @@ namespace MyLibrary.Mathematics.NumberTheorem
 {
     public class ModularArithmetic
     {
-        public static BigInteger PositiveMod(BigInteger n, BigInteger m) =>
-            n % m < 0 ? n % m + m : n % m;
+        public static int PositiveMod(BigInteger n, BigInteger m) =>
+            n % m < 0 ? Int32.Parse((n % m + m).ToString()) : Int32.Parse((n % m).ToString());
 
         /// <summary>
         /// The inverse of a module can be used to find a key in cryptograph.
