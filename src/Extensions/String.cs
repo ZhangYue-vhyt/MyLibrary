@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace MyLibrary.Extensions
 {
-    public static class StringExtensions
+    public static class String
     {
         public static string ToFirstUpper(this string str)
         {
             if (str.Length == 0) return str;
             var s = str.Split('.');
-            return String.Join(". ", s.Select(
+            return System.String.Join(". ", s.Select(
                 ele => ele = ele.Trim().FirstOrDefault().ToString().ToUpper() + ele.Substring(1).ToLower()
             ));
         }
