@@ -1,25 +1,25 @@
 using System;
 using System.Security.Cryptography;
-using SBigInteger = System.Numerics.BigInteger;
+using System.Numerics;
 namespace MyLibrary.Extensions
 {
-    public static class BigInteger
+    public static class BigIntegerExtensions
     {
         /// <summary>
         /// Generate a random BigInteger less than the input.
         /// </summary>
         /// <param name="upperBound"></param>
         /// <returns></returns>
-        public static SBigInteger Random(this SBigInteger upperBound)
+        public static BigInteger Random(this BigInteger upperBound)
         {
             byte[] bytes = upperBound.ToByteArray();
-            var result = new SBigInteger();
+            var result = new BigInteger();
             var random = new Random();
             do
             {
                 random.NextBytes(bytes);
                 bytes[bytes.Length - 1] &= (byte) 0x7F; //force sign bit to positive
-                result = new SBigInteger(bytes);
+                result = new BigInteger(bytes);
             } while (result >= upperBound);
 
             return result;

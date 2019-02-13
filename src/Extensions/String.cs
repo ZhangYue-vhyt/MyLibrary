@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MyLibrary.Extensions
 {
-    public static class String
+    public static class StringExtensions
     {
         public static string ToFirstUpper(this string str)
         {
