@@ -7,22 +7,36 @@ namespace MyLibrary.Mathematics.NumberTheorem
 {
     public class ModularArithmetic
     {
-        public static int PositiveMod(BigInteger n, BigInteger m) =>
-            n % m < 0 ? Int32.Parse((n % m + m).ToString()) : Int32.Parse((n % m).ToString());
+        public BigInteger Modulo { get; set; }
+        public ModularArithmetic(BigInteger modulo)
+        {
+            Modulo = modulo;
+        }
+        public BigInteger PositiveMod(BigInteger number) =>
+            number % Modulo < 0 ? Int32.Parse((number % Modulo + Modulo).ToString()) : Int32.Parse((number % Modulo).ToString());
 
+        public bool HasInverse(BigInteger number)
+        {
+            var gcd = new GCD(number, Modulo);
+            return gcd.Value == 1;
+        }
         /// <summary>
         /// The inverse of a module can be used to find a key in cryptograph.
         /// If gcd(a,m)==1 then the inverse is exist and
         ///     ax + my = 1
         ///     inverse = (x + m) % m
+        /// else throw an ArgumentException.
         /// <see href="https://www.wikiwand.com/en/Modular_multiplicative_inverse">Reference</see>
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="m"></param>
-        /// <returns>(The inverse of 'a' under modulo 'm', hasInverse) </returns>
-        public static(BigInteger, bool) Inverse(BigInteger a, BigInteger m) =>
-            ((GCD.ExtendedEuclideanAlgorithm(a, m).Item1 + m) % m,
-                GCD.EuclideanAlgorithm(a, m) == 1);
+        /// <param name="number">a</param>
+        /// <returns>The inverse of 'a' under the modulo 'm', hasInverse</returns>
+        public BigInteger Inverse(BigInteger number)
+        {
+            var gcd = new GCD(number, Modulo);
+            if (gcd.Value == 1)
+                return (gcd.EEA.Item1 + Modulo) % Modulo;
+            throw new ArgumentException($"{number} does not have an inverse under the modulo ${Modulo}.");
+        }
 
         /// <summary>
         /// Chinese Remainder Theorem is a method to solve the modular equation system.
@@ -30,10 +44,17 @@ namespace MyLibrary.Mathematics.NumberTheorem
         /// </summary>
         /// <param name="coefficients">list of (a,m)</param>
         /// <returns></returns>
-        public static BigInteger ChineseRemainderTheorem(IEnumerable < (BigInteger, BigInteger) > coefficients)
+        public BigInteger ChineseRemainderTheorem(IEnumerable < (BigInteger, BigInteger) > coefficients)
         {
             var M = coefficients.Aggregate(new BigInteger(1), (seed, item) => seed * item.Item2);
-            return coefficients.Aggregate(new BigInteger(0), (seed, item) => seed + item.Item1 * M / item.Item2 * PositiveMod(Inverse(M / item.Item2, item.Item2).Item1, item.Item2)) % M;
+            return coefficients.Aggregate(new BigInteger(0), (seed, item) =>
+            {
+                var ai = item.Item1;
+                var mi = new ModularArithmetic(item.Item2);
+                var Mi = M / item.Item2;
+                var ti = mi.PositiveMod(mi.Inverse(Mi));
+                return seed + ai * Mi * ti;
+            }) % M;
         }
     }
 }

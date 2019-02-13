@@ -8,16 +8,16 @@ namespace MyLibrary.Mathematics.Cryptography
 {
     public class AffineCipher : ICryptography
     {
-        private BigInteger Modulo { get; set; }
+        private ModularArithmetic Mod { get; set; }
         private(BigInteger, BigInteger) Key { get; set; }
         public AffineCipher((BigInteger, BigInteger) key, BigInteger mod)
         {
             Key = key;
-            Modulo = mod;
+            Mod = new ModularArithmetic(mod);
         }
         public AffineCipher(int mod = 26)
         {
-            Modulo = mod;
+            Mod = new ModularArithmetic(mod);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace MyLibrary.Mathematics.Cryptography
         /// <returns>Ciphertext</returns>
         public string Encryption(string plaintext) =>
             new String(plaintext.ToCharArray().Select(c =>
-                Convert.ToChar(('A' + ((Key.Item1 * c + Key.Item2)) % Modulo))).ToArray());
+                Convert.ToChar(('A' + ((Key.Item1 * c + Key.Item2)) % Mod.Modulo))).ToArray());
 
         /// <summary>
         /// Key = (a,b)
@@ -38,11 +38,13 @@ namespace MyLibrary.Mathematics.Cryptography
         /// </summary>
         /// <param name="ciphertext"></param>
         /// <returns></returns>
-        public string Decryption(string ciphertext) =>
-            new String(ciphertext.ToCharArray().Select(c =>
-                    Convert.ToChar((ModularArithmetic.Inverse(Key.Item1, Modulo).Item1 *
-                        ModularArithmetic.PositiveMod(c - 'A' - Key.Item2, Modulo) + 'A')))
+        public string Decryption(string ciphertext)
+        {
+            return new String(ciphertext.ToCharArray().Select(c =>
+                    Convert.ToChar((Mod.Inverse(Key.Item1) *
+                        Mod.PositiveMod(c - 'A' - Key.Item2) + 'A')))
                 .ToArray());
+        }
 
         /// <summary>
         /// Return the possible solutions of 
@@ -54,10 +56,11 @@ namespace MyLibrary.Mathematics.Cryptography
         /// <returns>A list of possible Keys (a,b,isValid)</returns>
         public(BigInteger, BigInteger, bool) GuessKey((BigInteger, BigInteger) pair1, (BigInteger, BigInteger) pair2)
         {
-            if (ModularArithmetic.Inverse(ModularArithmetic.PositiveMod(pair2.Item1 - pair1.Item1, Modulo), Modulo).Item2)
+            // if (Mod.Inverse(Mod.PositiveMod(pair2.Item1 - pair1.Item1)).Item2)
+            if (Mod.HasInverse(Mod.PositiveMod(pair2.Item1 - pair1.Item1)))
             {
-                var a = ModularArithmetic.Inverse(ModularArithmetic.PositiveMod(pair2.Item1 - pair1.Item1, Modulo), Modulo).Item1 * (ModularArithmetic.PositiveMod(pair2.Item2 - pair1.Item2, Modulo)) % Modulo;
-                var b = ModularArithmetic.PositiveMod(pair1.Item2 - a * pair1.Item1, Modulo);
+                var a = Mod.Inverse(Mod.PositiveMod(pair2.Item1 - pair1.Item1)) * (Mod.PositiveMod(pair2.Item2 - pair1.Item2)) % Mod.Modulo;
+                var b = Mod.PositiveMod(pair1.Item2 - a * pair1.Item1);
                 return (a, b, true);
             }
             return (0, 0, false);

@@ -38,8 +38,9 @@ namespace MyLibrary.Mathematics.Cryptography
 
         public string Decryption(string ciphertext)
         {
+            var mod = new ModularArithmetic(PrivateKey.Item1);
             return new String(ciphertext.ToCharArray().Select(
-                ch => Convert.ToChar(ModularArithmetic.PositiveMod(BigInteger.Pow(ch - 'A', PrivateKey.Item4), PrivateKey.Item1) + 'A')).ToArray());
+                ch => Convert.ToChar(mod.PositiveMod(BigInteger.Pow(ch - 'A', PrivateKey.Item4) + 'A'))).ToArray());
         }
 
         public string Encryption(string plaintext)

@@ -4,22 +4,37 @@ namespace MyLibrary.Mathematics.NumberTheorem
 {
     public class Prime
     {
-        /// <summary>
-        /// Use ASK algorithm to check if a number is prime.
-        /// Reference:<see href="https://www.wikiwand.com/zh/AKS%E8%B3%AA%E6%95%B8%E6%B8%AC%E8%A9%A6">ASK Algorithm</see>
-        /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public static bool ASK(BigInteger n)
+        public BigInteger Input { get; set; }
+        public bool IsProbablyPrime
         {
-            for (double i = 2; i <= BigInteger.Log(n, 2); i++)
+            get
             {
+                return false;
             }
-            return false;
+        }
+        public Prime(BigInteger input)
+        {
+            Input = input;
         }
 
-        // public static bool IsCoprime(int n) { }
+        /// <summary>
+        /// Miller–Rabin primality test. The result is not 100% correct.
+        /// If you need an accurate primality test, please use AKS test.
+        /// References: <see href="https://crypto.stanford.edu/pbc/notes/numbertheory/millerrabin.html">Stanford</see>
+        /// </summary>
+        /// <returns></returns>
+        public bool MillerRabin()
+        {
+            if (Input < 2) return false;
+            return true;
+        }
 
-        // public static IList<int> PrimeLessThan(int n) { }
+        // public bool AKS() => new AKS(Input).IsPrime;
+
+        // public bool IsCoprime(BigInteger another) { }
+        // public IEnumerable<int> PrimeLessThan() { }
+        // public IEnumerable<int> PrimeBetween(BigInteger another) { }
+        // public BigInteger Next();
+        // public IEnumerable<BigInteger> PrimesAfter(int count);
     }
 }
