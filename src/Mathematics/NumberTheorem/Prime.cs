@@ -5,6 +5,7 @@ namespace MyLibrary.Mathematics.NumberTheorem
     public class Prime
     {
         public BigInteger Input { get; set; }
+        public bool IsPrime { get; }
         public bool IsProbablyPrime
         {
             get

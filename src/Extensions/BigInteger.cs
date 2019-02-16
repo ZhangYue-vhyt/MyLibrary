@@ -1,6 +1,7 @@
 using System;
-using System.Security.Cryptography;
 using System.Numerics;
+using System.Security.Cryptography;
+
 namespace MyLibrary.Extensions
 {
     public static class BigIntegerExtensions
@@ -12,7 +13,7 @@ namespace MyLibrary.Extensions
         /// <returns></returns>
         public static BigInteger Random(this BigInteger upperBound)
         {
-            byte[] bytes = upperBound.ToByteArray();
+            var bytes = upperBound.ToByteArray();
             var result = new BigInteger();
             var random = new Random();
             do

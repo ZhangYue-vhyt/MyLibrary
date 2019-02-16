@@ -13,13 +13,11 @@ namespace MyLibrary.Mathematics.NumberTheorem
             Modulo = modulo;
         }
         public BigInteger PositiveMod(BigInteger number) =>
-            number % Modulo < 0 ? Int32.Parse((number % Modulo + Modulo).ToString()) : Int32.Parse((number % Modulo).ToString());
+            number % Modulo < 0 ? number % Modulo + Modulo : number % Modulo;
 
-        public bool HasInverse(BigInteger number)
-        {
-            var gcd = new GCD(number, Modulo);
-            return gcd.Value == 1;
-        }
+        public bool HasInverse(BigInteger number) =>
+            new GCD(number, Modulo).Value == 1;
+
         /// <summary>
         /// The inverse of a module can be used to find a key in cryptograph.
         /// If gcd(a,m)==1 then the inverse is exist and
