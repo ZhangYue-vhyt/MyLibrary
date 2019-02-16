@@ -52,7 +52,9 @@ namespace MyLibrary.Algorithms.DP
             Matrix = new int[row, col];
 
             for (int i = 0; i < col; i++)
-                Matrix[0, i] = Int32.MaxValue;
+                Matrix[0, i] = Money + 1;
+            for (int i = 0; i < row; i++)
+                Matrix[i, 0] = 0;
 
             for (int i = 1; i < row; i++)
             {
@@ -63,11 +65,13 @@ namespace MyLibrary.Algorithms.DP
                         Math.Min(Matrix[i - 1, j], 1 + Matrix[i, j - Coins.ElementAt(i - 1)]);
                 }
             }
+
             for (int i = 0; i < row; i++)
             {
                 for (int j = 0; j < col; j++)
                 {
-                    Matrix[i, j] -= Int32.MaxValue;
+                    if (Matrix[i, j] > Money)
+                        Matrix[i, j] = 0;
                 }
             }
         }
@@ -84,12 +88,7 @@ namespace MyLibrary.Algorithms.DP
             var j = Money;
             while (i > 0 && j > 0)
             {
-                if (Matrix[i, j] == Matrix[i - 1, j])
-                {
-                    // result.Add(i-- - 2);
-                    // Counts.TryAdd(Coins.ElementAt(i-- - 1), 0);
-                    i--;
-                }
+                if (Matrix[i, j] == Matrix[i - 1, j]) i--;
                 else if (Matrix[i, j] == Matrix[i, j - Coins.ElementAt(i - 1)] + 1)
                 {
                     j -= Coins.ElementAt(i - 1);
