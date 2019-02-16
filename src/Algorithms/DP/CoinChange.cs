@@ -63,6 +63,13 @@ namespace MyLibrary.Algorithms.DP
                         Math.Min(Matrix[i - 1, j], 1 + Matrix[i, j - Coins.ElementAt(i - 1)]);
                 }
             }
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < col; j++)
+                {
+                    Matrix[i, j] -= Int32.MaxValue;
+                }
+            }
         }
 
         private void BuildCounts()
