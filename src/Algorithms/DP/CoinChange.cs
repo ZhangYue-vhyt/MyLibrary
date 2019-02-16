@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MyLibrary.Extensions;
 
 namespace MyLibrary.Algorithms.DP
 {
@@ -17,17 +18,17 @@ namespace MyLibrary.Algorithms.DP
         /// Return how many ways the change can be made.
         /// </summary>
         /// <value>0 means impossible.</value>
-        public int Result { get; set; }
+        public int Result { get; private set; }
 
         /// <summary>
         /// Return a dictionary whose keys are Coins,
         /// values are the count of each coin.
         /// </summary>
         /// <value></value>
-        public IDictionary<int, int> Counts { get; set; }
+        public IDictionary<int, int> Counts { get; private set; }
+        public int[, ] Matrix { get; private set; }
         private int Money { get; set; }
         private ISet<int> Coins { get; set; }
-        public int[, ] Matrix { get; set; }
         public CoinChange(int money, IEnumerable<int> coins)
         {
             if (money > 0 && coins.All(coin => coin >= 0))
@@ -79,7 +80,7 @@ namespace MyLibrary.Algorithms.DP
         private void BuildCounts()
         {
             Counts = new SortedList<int, int>(Coins.Count);
-            
+
             foreach (var item in Coins)
             {
                 Counts.TryAdd(item, 0);
