@@ -9,8 +9,6 @@ namespace MyLibrary.Algorithms.DP
     /// Given a value N, if we want to make change for N cents, 
     /// and we have infinite supply of each of S = { S1, S2, .. , Sm} valued coins, 
     /// how many  ways can we make the change? The order of coins doesn’t matter.
-    /// The transition function is 
-    ///     C[i,j] = Min(C[i-1,j], 1+C[i,j-Si])
     /// </summary>
     public class CoinChange
     {
@@ -34,7 +32,7 @@ namespace MyLibrary.Algorithms.DP
             if (money > 0 && coins.All(coin => coin >= 0))
             {
                 Money = money;
-                Coins = new SortedSet<int>(coins);
+                Coins = new HashSet<int>(coins);
                 Coins.Remove(0);
                 BuildMatrix();
                 BuildCounts();
@@ -43,17 +41,22 @@ namespace MyLibrary.Algorithms.DP
             else
             {
                 Result = 0;
+                Counts = null;
             }
         }
 
+        /// <summary>
+        /// The transition function is 
+        ///     C[i,j] = Min(C[i-1,j], 1+C[i,j-Si])
+        /// </summary>
         private void BuildMatrix()
         {
             var row = Coins.Count + 1;
             var col = Money + 1;
             Matrix = new int[row, col];
 
-            for (int i = 0; i < col; i++)
-                Matrix[0, i] = Money + 1;
+            for (int j = 0; j < col; j++)
+                Matrix[0, j] = Money + 1;
             for (int i = 0; i < row; i++)
                 Matrix[i, 0] = 0;
 
