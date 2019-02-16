@@ -79,6 +79,7 @@ namespace MyLibrary.Algorithms.DP
         private void BuildCounts()
         {
             Counts = new SortedList<int, int>(Coins.Count);
+            
             foreach (var item in Coins)
             {
                 Counts.TryAdd(item, 0);
