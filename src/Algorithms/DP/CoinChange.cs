@@ -27,6 +27,7 @@ namespace MyLibrary.Algorithms.DP
         public int[, ] Matrix { get; private set; }
         private int Money { get; set; }
         private ISet<int> Coins { get; set; }
+        
         public CoinChange(int money, IEnumerable<int> coins)
         {
             if (money > 0 && coins.All(coin => coin >= 0))

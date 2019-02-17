@@ -15,9 +15,6 @@ namespace MyLibrary.Algorithms.DP
     /// </summary>
     public class Knapsack
     {
-        public int[, ] Matrix { get; private set; }
-        public int MaxProfit { get; private set; }
-
         /// <summary>
         /// The result of picked objects.
         /// The index is the same as the index of objects.
@@ -25,6 +22,8 @@ namespace MyLibrary.Algorithms.DP
         /// </summary>
         /// <value></value>
         public int[] Result { get; private set; }
+        public int MaxProfit { get; private set; }
+        public int[, ] Matrix { get; private set; }
         private IEnumerable<int> Weights { get; set; }
         private IEnumerable<int> Profits { get; set; }
         public int Capacity { get; private set; }
@@ -76,6 +75,7 @@ namespace MyLibrary.Algorithms.DP
                 }
             }
         }
+        
         private void BuildResult()
         {
             Result = new int[Weights.Count()];
