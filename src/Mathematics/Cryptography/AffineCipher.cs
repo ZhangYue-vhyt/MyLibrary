@@ -19,13 +19,14 @@ namespace MyLibrary.Mathematics.Cryptography
         /// <summary>
         /// Key = (a,b)
         /// Modulo = m
-        /// E(x) = (a + b) mod m
+        /// E(x) = (ax + b) mod m
         /// </summary>
         /// <param name="plaintext"></param>
         /// <returns>Ciphertext</returns>
-        public override string Encryption(string plaintext, int start = 0) =>
-            new String(plaintext.ToCharArray().Select(x =>
-                Convert.ToChar((((PrivateKey.ElementAt(0) * (x - start) + PrivateKey.ElementAt(1))) % Mod.Modulo))).ToArray());
+        public override string Encryption(string plaintext, int start = 'A') =>
+            new String(plaintext.ToCharArray().Select(x => Convert.ToChar(
+                (((PrivateKey.ElementAt(0) * (x - start) + PrivateKey.ElementAt(1))) % Mod.Modulo)
+            )).ToArray());
 
         /// <summary>
         /// Key = (a,b)
@@ -34,18 +35,16 @@ namespace MyLibrary.Mathematics.Cryptography
         /// </summary>
         /// <param name="ciphertext"></param>
         /// <returns></returns>
-        public override string Decryption(string ciphertext, int start = 0)
-        {
-            return new String(ciphertext.ToCharArray().Select(y =>
-                    Convert.ToChar((Mod.Inverse(PrivateKey.ElementAt(0)) *
-                        Mod.PositiveMod(y - start - PrivateKey.ElementAt(1)) + start)))
-                .ToArray());
-        }
+        public override string Decryption(string ciphertext, int start = 'A') =>
+            new String(ciphertext.ToCharArray().Select(y => Convert.ToChar(
+                (Mod.PositiveMod(Mod.Inverse(PrivateKey.ElementAt(0)) *
+                    (y - start - PrivateKey.ElementAt(1))) + start)
+            )).ToArray());
 
         /// <summary>
         /// Return the possible solutions of 
-        ///     a * x1 + b mod m = y1
-        ///     a * x2 + b mod m = y2
+        ///     y1 = a * x1 + b mod m 
+        ///     y2 = a * x2 + b mod m 
         /// </summary>
         /// <param name="pair1">(x1,y1)</param>
         /// <param name="pair2">(x2,y2)</param>
@@ -54,7 +53,7 @@ namespace MyLibrary.Mathematics.Cryptography
         {
             if (Mod.HasInverse(Mod.PositiveMod(pair2.Item1 - pair1.Item1)))
             {
-                var a = Mod.Inverse(Mod.PositiveMod(pair2.Item1 - pair1.Item1)) * (Mod.PositiveMod(pair2.Item2 - pair1.Item2)) % Mod.Modulo;
+                var a = Mod.PositiveMod(Mod.Inverse(Mod.PositiveMod(pair2.Item1 - pair1.Item1)) * (Mod.PositiveMod(pair2.Item2 - pair1.Item2)));
                 var b = Mod.PositiveMod(pair1.Item2 - a * pair1.Item1);
                 return (a, b, true);
             }
