@@ -23,9 +23,9 @@ namespace MyLibrary.Mathematics.Cryptography
         /// </summary>
         /// <param name="plaintext"></param>
         /// <returns>Ciphertext</returns>
-        public override string Encryption(string plaintext) =>
+        public override string Encryption(string plaintext, int start = 0) =>
             new String(plaintext.ToCharArray().Select(x =>
-                Convert.ToChar(('A' + ((PrivateKey.ElementAt(0) * x + PrivateKey.ElementAt(1))) % Mod.Modulo))).ToArray());
+                Convert.ToChar((((PrivateKey.ElementAt(0) * (x - start) + PrivateKey.ElementAt(1))) % Mod.Modulo))).ToArray());
 
         /// <summary>
         /// Key = (a,b)
@@ -34,11 +34,11 @@ namespace MyLibrary.Mathematics.Cryptography
         /// </summary>
         /// <param name="ciphertext"></param>
         /// <returns></returns>
-        public override string Decryption(string ciphertext)
+        public override string Decryption(string ciphertext, int start = 0)
         {
             return new String(ciphertext.ToCharArray().Select(y =>
                     Convert.ToChar((Mod.Inverse(PrivateKey.ElementAt(0)) *
-                        Mod.PositiveMod(y - 'A' - PrivateKey.ElementAt(1)) + 'A')))
+                        Mod.PositiveMod(y - start - PrivateKey.ElementAt(1)) + start)))
                 .ToArray());
         }
 

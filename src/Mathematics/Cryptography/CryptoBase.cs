@@ -8,7 +8,7 @@ namespace MyLibrary.Mathematics.Cryptography
         public IEnumerable<BigInteger> PublicKey { get; set; }
         protected IEnumerable<BigInteger> PrivateKey { get; set; }
 
-        public abstract string Encryption(string plaintext);
-        public abstract string Decryption(string ciphertext);
+        public abstract string Encryption(string plaintext, int start = 0);
+        public abstract string Decryption(string ciphertext, int start = 0);
     }
 }

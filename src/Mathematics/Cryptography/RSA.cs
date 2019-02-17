@@ -27,9 +27,9 @@ namespace MyLibrary.Mathematics.Cryptography
         /// </summary>
         /// <param name="plaintext"></param>
         /// <returns></returns>
-        public override string Encryption(string plaintext) =>
+        public override string Encryption(string plaintext, int start = 0) =>
             new String(plaintext.ToCharArray().Select(x => Convert.ToChar(
-                BigInteger.ModPow(x, PublicKey.ElementAt(1), PublicKey.ElementAt(0))
+                BigInteger.ModPow(x - start, PublicKey.ElementAt(1), PublicKey.ElementAt(0))
             )).ToArray());
 
         /// <summary>
@@ -37,9 +37,9 @@ namespace MyLibrary.Mathematics.Cryptography
         /// </summary>
         /// <param name="ciphertext"></param>
         /// <returns></returns>
-        public override string Decryption(string ciphertext) =>
+        public override string Decryption(string ciphertext, int start = 0) =>
             new String(ciphertext.ToCharArray().Select(y => Convert.ToChar(
-                BigInteger.ModPow(y, PrivateKey.ElementAt(2), PublicKey.ElementAt(0))
+                start + BigInteger.ModPow(y-start, PrivateKey.ElementAt(2), PublicKey.ElementAt(0))
             )).ToArray());
 
     }
