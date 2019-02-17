@@ -1,51 +1,46 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using MyLibrary.Mathematics.NumberTheorem;
 
 namespace MyLibrary.Mathematics.Cryptography
 {
-    public class RSA : ICryptography
+    public class RSA : CryptoBase
     {
-        /// <summary>
-        /// The public key (n, b)
-        /// </summary>
-        /// <value></value>
-        public(BigInteger, int) PublicKey { get; set; }
-
-        /// <summary>
-        /// The private key = (n, p, q, a, b)
-        /// </summary>
-        /// <value></value>
-        private(BigInteger, BigInteger, BigInteger, int, int) PrivateKey { get; set; }
-        public(BigInteger, int) ReceivedKey { get; set; }
-
         public RSA()
         {
-            GeneratePrivateKey();
+            BuildKeys();
         }
 
-        public RSA((int, int) receivedKey)
-        {
-            ReceivedKey = receivedKey;
-            GeneratePrivateKey();
-        }
-
-        private void GeneratePrivateKey()
+        /// <summary>
+        /// Public key = {n,b}
+        /// Private key = {p,q,a}
+        /// </summary>
+        private void BuildKeys()
         {
 
         }
 
-        public string Decryption(string ciphertext)
-        {
-            var mod = new ModularArithmetic(PrivateKey.Item1);
-            return new String(ciphertext.ToCharArray().Select(
-                ch => Convert.ToChar(mod.PositiveMod(BigInteger.Pow(ch - 'A', PrivateKey.Item4) + 'A'))).ToArray());
-        }
+        /// <summary>
+        /// D(y) = y^a mod n
+        /// </summary>
+        /// <param name="plaintext"></param>
+        /// <returns></returns>
+        public override string Encryption(string plaintext) =>
+            new String(plaintext.ToCharArray().Select(x => Convert.ToChar(
+                BigInteger.ModPow(x, PublicKey.ElementAt(1), PublicKey.ElementAt(0))
+            )).ToArray());
 
-        public string Encryption(string plaintext)
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// E(x) = x^b mod n
+        /// </summary>
+        /// <param name="ciphertext"></param>
+        /// <returns></returns>
+        public override string Decryption(string ciphertext) =>
+            new String(ciphertext.ToCharArray().Select(y => Convert.ToChar(
+                BigInteger.ModPow(y, PrivateKey.ElementAt(2), PublicKey.ElementAt(0))
+            )).ToArray());
+
     }
 }
