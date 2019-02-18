@@ -8,10 +8,8 @@ namespace MyLibrary.Mathematics.Cryptography
     public class VigenereCipher : CryptoBase
     {
         private IEnumerable<int> PrivateKey { get; set; }
-        public VigenereCipher(string keyString)
-        {
+        public VigenereCipher(string keyString) =>
             PrivateKey = keyString.ToCharArray().Select(c => c - 'A');
-        }
 
         public override string Encryption(string plaintext, int start = 'A')
         {
