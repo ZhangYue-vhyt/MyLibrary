@@ -22,6 +22,10 @@ namespace MyLibrary.Mathematics.NumberTheorem
             }
         }
 
+        /// <summary>
+        /// Random prime and primality tests.
+        /// References:<a href="http://zoo.cs.yale.edu/classes/cs467/2010s/lectures/ln14.pdf">Yale</a>
+        /// </summary>
         public Prime(BigInteger input)
         {
             Input = input;
@@ -72,12 +76,6 @@ namespace MyLibrary.Mathematics.NumberTheorem
             return true;
         }
 
-        /// <summary>
-        /// Miller–Rabin primality test. The result is not 100% correct.
-        /// If you need an accurate primality test, please use AKS test.
-        /// References: <see href="https://crypto.stanford.edu/pbc/notes/numbertheory/millerrabin.html">Stanford</see>
-        /// </summary>
-        /// <returns></returns>
         private bool MillerRabin(BigInteger a)
         {
             var m = Input - 1;
