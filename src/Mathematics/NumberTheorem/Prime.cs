@@ -80,7 +80,7 @@ namespace MyLibrary.Mathematics.NumberTheorem
         {
             var m = Input - 1;
             var k = 0;
-            while ((m & 1) == 0)
+            while (!m.IsEven)
             {
                 k++;
                 m >>= 1;

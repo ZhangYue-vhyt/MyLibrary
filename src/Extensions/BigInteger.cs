@@ -35,12 +35,10 @@ namespace MyLibrary.Extensions
         /// <returns></returns>
         public static BigInteger Random(this BigInteger lowerBound, BigInteger upperBound)
         {
-            while (upperBound > lowerBound)
-            {
-                var result = upperBound.Random();
-                if (result >= lowerBound) return result;
-            }
-            throw new ArgumentOutOfRangeException("The upper bound has to be greater than the lower bound.");
+            if (upperBound <= lowerBound)
+                throw new ArgumentOutOfRangeException("The upper bound has to be greater than the lower bound.");
+            var interval = upperBound - lowerBound;
+            return lowerBound + interval.Random();
         }
     }
 }
