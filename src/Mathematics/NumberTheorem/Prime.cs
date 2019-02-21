@@ -38,30 +38,36 @@ namespace MyLibrary.Mathematics.NumberTheorem
             (int) BigInteger.ModPow(a, (Input - 1) / 2, Input);
 
         [Obsolete]
-        private int JacobiSymbol(BigInteger a, BigInteger n)
+        private int Jacobi(BigInteger a, BigInteger n)
         {
-            if (a == 1) return 1;
-            if (a == -1) return -1;
-            if (new GCD(a, n).Value != 1) return 0;
-            if (a > n) return JacobiSymbol(n % a, n);
-            var b = a / 2;
-            var mod8 = BigInteger.Abs(n % 8);
-            if (a == 2 && mod8 == 1) return 1;
-            if (a == 2 && mod8 == 3) return -1;
-            if (a.IsEven) return JacobiSymbol(2, n) * JacobiSymbol(b, n);
-            if (a % 4 == 3 && n % 4 == 3) return -JacobiSymbol(n, a);
-            return JacobiSymbol(n, a);
+            if (a.IsZero) return n.IsOne ? 1 : 0;
+            if (a == 2)
+            {
+                switch ((int) (n + 8) % 8)
+                {
+                    case 1:
+                    case 7:
+                        return 1;
+                    case 3:
+                    case 5:
+                        return -1;
+                }
+            }
+            if (a >= n) return Jacobi(a % n, n);
+            if (a.IsEven) return Jacobi(2, n) * Jacobi(a / 2, n);
+            return ((a + 4) % 4 == 3 && (n + 4) % 4 == 3) ? -Jacobi(n, a) : Jacobi(n, a);
         }
 
         [Obsolete]
         private bool SolovayStrassen()
         {
-            if (Input.IsEven || Input < 2) return false;
+            if ((Input.IsEven && Input != 2) || Input < 2) return false;
             for (int i = 0; i < 100; i++)
             {
                 var a = new BigInteger(1).Random(Input);
-                if (JacobiSymbol(a, Input) != EulerCriterion(a))
-                    return false;
+                var x = Jacobi(a, Input);
+                var y = EulerCriterion(a);
+                if (x == 0 || (x + Input) % Input != (y + Input) % Input) return false;
             }
             return true;
         }
@@ -82,12 +88,13 @@ namespace MyLibrary.Mathematics.NumberTheorem
                 m >>= 1;
             }
             var b = BigInteger.ModPow(a, m, Input);
+            if (b % Input == 1) return true;
             for (int i = 0; i < k; i++)
             {
-                if (b + 1 % Input == 0) return true;
+                if ((b + 1) % Input == 0) return true;
                 b = BigInteger.ModPow(b, 2, Input);
             }
-            return true;
+            return false;
         }
 
         // public bool AKS() => new AKS(Input).IsPrime;
