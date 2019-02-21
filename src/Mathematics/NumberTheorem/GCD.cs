@@ -4,12 +4,14 @@ namespace MyLibrary.Mathematics.NumberTheorem
 {
     public class GCD
     {
-        public BigInteger Value { get; }
-        public(BigInteger, BigInteger, BigInteger) EEA { get; }
+        private BigInteger a;
+        private BigInteger b;
+        public BigInteger Value { get { return EuclideanAlgorithm(a, b); } }
+        public(BigInteger, BigInteger, BigInteger) EEA { get { return ExtendedEuclideanAlgorithm(a, b); } }
         public GCD(BigInteger a, BigInteger b)
         {
-            Value = EuclideanAlgorithm(a, b);
-            EEA = ExtendedEuclideanAlgorithm(a, b);
+            this.a = a;
+            this.b = b;
         }
         public BigInteger EuclideanAlgorithm(BigInteger a, BigInteger b)
         {
