@@ -23,7 +23,7 @@ namespace MyLibrary.Mathematics.Cryptography
         }
 
         /// <summary>
-        /// D(y) = y^a mod n
+        /// E(x) = x^b mod n
         /// </summary>
         /// <param name="plaintext"></param>
         /// <returns></returns>
@@ -33,7 +33,7 @@ namespace MyLibrary.Mathematics.Cryptography
             )).ToArray());
 
         /// <summary>
-        /// E(x) = x^b mod n
+        /// D(y) = y^a mod n
         /// </summary>
         /// <param name="ciphertext"></param>
         /// <returns></returns>
