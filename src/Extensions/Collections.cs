@@ -6,7 +6,6 @@ namespace MyLibrary.Extensions
 {
     public static class CollectionsExtensions
     {
-        delegate void PrintDelegate(string str);
         public static void PrintEnumerable<T>(this IEnumerable<T> ary) =>
             System.Console.WriteLine("[{0}]", String.Join(", ", ary));
         public static void PrintDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dict) =>

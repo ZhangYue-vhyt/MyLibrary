@@ -9,7 +9,8 @@ namespace MyLibrary.Mathematics.NumberTheorem
     {
         public BigInteger Modulo { get; set; }
 
-        public ModularArithmetic(BigInteger modulo) => Modulo = modulo;
+        public ModularArithmetic(BigInteger modulo) =>
+            this.Modulo = modulo;
 
         public BigInteger PositiveMod(BigInteger number) =>
             number % Modulo < 0 ? number % Modulo + Modulo : number % Modulo;

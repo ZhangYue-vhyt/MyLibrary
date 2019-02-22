@@ -28,7 +28,7 @@ namespace MyLibrary.Mathematics.NumberTheorem
         /// </summary>
         public Prime(BigInteger input)
         {
-            Input = input;
+            this.Input = input;
         }
 
         /// <summary>
