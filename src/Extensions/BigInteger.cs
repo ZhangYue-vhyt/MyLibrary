@@ -13,7 +13,8 @@ namespace MyLibrary.Extensions
         /// <returns></returns>
         public static BigInteger Random(this BigInteger upperBound)
         {
-            if (upperBound < 1) throw new ArgumentOutOfRangeException("The upper bound has to be greater or equal than 1.");
+            if (upperBound < 1)
+                throw new ArgumentOutOfRangeException("The upper bound has to be greater or equal than 1.");
             var bytes = upperBound.ToByteArray();
             var result = new BigInteger();
             var random = new Random();

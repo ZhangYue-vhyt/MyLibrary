@@ -37,12 +37,24 @@ namespace MyLibrary.Mathematics.NumberTheorem
         /// </summary>
         /// <param name="a"></param>
         /// <returns></returns>
-        [Obsolete]
         private int EulerCriterion(BigInteger a) =>
             (int) BigInteger.ModPow(a, (Input - 1) / 2, Input);
 
-        [Obsolete]
-        private int Jacobi(BigInteger a, BigInteger n)
+        /// <summary>
+        /// Given an odd integer n, test for a random b whether
+        /// EulerCriterion(b) == Jacobi(b, n)
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public bool EulerTest()
+        {
+            var a = Input.Random();
+            return EulerCriterion(a) == Jacobi(a, Input);
+        }
+
+        public bool EulerTest(BigInteger a) => EulerCriterion(a) == Jacobi(a, Input);
+
+        public int Jacobi(BigInteger a, BigInteger n)
         {
             if (a.IsZero) return n.IsOne ? 1 : 0;
             if (a == 2)
